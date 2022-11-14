@@ -17,3 +17,10 @@ export interface SwaggerConfig {
   description: string;
   version: string;
 }
+
+export interface RedisConfig {
+  name: string;
+  host: string;
+  port: number;
+  db: number;
+}
