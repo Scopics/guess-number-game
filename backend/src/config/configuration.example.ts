@@ -18,6 +18,20 @@ export default () => ({
       subscribersDir: 'src/subscriber',
     },
   },
+  redis: [
+    {
+      name: 'name-subscriber',
+      host: 'host',
+      port: 6379,
+      db: 0,
+    },
+    {
+      name: 'name-publisher',
+      host: 'host',
+      port: 6379,
+      db: 0,
+    },
+  ],
   swagger: {
     title: 'ICS',
     description: 'Intelligent file storage',
