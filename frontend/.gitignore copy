@@ -1,0 +1,16 @@
+# Dependency directories
+node_modules/
+
+.idea/
+
+# Optional npm cache directory
+.npm
+
+# dotenv environment variables file
+.env
+.env.test
+
+# Swagger files
+temp
+
+.DS_Store
