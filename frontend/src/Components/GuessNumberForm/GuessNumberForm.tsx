@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { GameControllerService, GameResponse } from 'clients/CoreService';
+import Countdown from 'react-countdown';
+import { GameControllerService } from 'clients/CoreService';
 import Input from 'Components/Input';
 import { delay } from 'consts/delay';
 import { entities } from 'consts/entities';
 import { useSnackbarOnError } from 'hooks/useSnackbarOnError';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import './GuessNumberForm.css';
-import Countdown from 'react-countdown';
 
 enum Status {
 	Idle,
@@ -25,7 +25,7 @@ export default function GuessNumberForm() {
 	const time = useRef(0);
 
 	useEffect(() => {
-		if (status == Status.Lost) {
+		if (status === Status.Lost) {
 			setErrorTxt('');
 			setId('');
 		}
@@ -116,12 +116,12 @@ export default function GuessNumberForm() {
 					<h4 className='text_primary'>Game status: {currentGame?.status || Status[status]}</h4>
 				</div>
 				<div className='body_form'>
-					{status == Status.Idle && (
-						<button className='guess_button' role='button' onClick={() => startGame()}>
+					{status === Status.Idle && (
+						<button className='guess_button' onClick={() => startGame()}>
 							Start game
 						</button>
 					)}
-					{status == Status.Active && currentGame && (
+					{status === Status.Active && currentGame && (
 						<>
 							<div className='level_text'>Level: {currentGame.level}</div>
 							<div className='level_text'>
@@ -143,7 +143,6 @@ export default function GuessNumberForm() {
 							/>
 							<button
 								className='guess_button'
-								role='button'
 								onClick={() => {
 									guessNumber(+guessedNumber);
 								}}
@@ -152,8 +151,8 @@ export default function GuessNumberForm() {
 							</button>
 						</>
 					)}
-					{(status == Status.Lost || status == Status.NoActiveGames) && (
-						<button className='guess_button' role='button' onClick={() => createGame()}>
+					{(status === Status.Lost || status === Status.NoActiveGames) && (
+						<button className='guess_button' onClick={() => createGame()}>
 							Create new game
 						</button>
 					)}
