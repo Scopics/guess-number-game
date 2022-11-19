@@ -16,7 +16,8 @@
 		"isolatedModules": true,
 		"noEmit": true,
 		"jsx": "react-jsx",
-		"outDir": "lib-temp"
+		"outDir": "lib-temp",
+		"strictPropertyInitialization": false
 	},
 	"include": ["src"]
 }
