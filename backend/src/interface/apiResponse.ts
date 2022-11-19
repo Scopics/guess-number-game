@@ -29,4 +29,10 @@ export class GameResponse {
 export class GuessNumberResponse {
   @ApiProperty()
   isGuessed: boolean;
+
+  @ApiProperty()
+  game: GameResponse;
+
+  @ApiProperty()
+  characteristic: string;
 }

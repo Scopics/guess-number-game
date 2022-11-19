@@ -9,5 +9,6 @@ export type { OpenAPIConfig } from './core/OpenAPI';
 export type { GameResponse } from './models/GameResponse';
 export type { GuessedNumberInterval } from './models/GuessedNumberInterval';
 export type { GuessNumberRequest } from './models/GuessNumberRequest';
+export type { GuessNumberResponse } from './models/GuessNumberResponse';
 
 export { GameControllerService } from './services/GameControllerService';

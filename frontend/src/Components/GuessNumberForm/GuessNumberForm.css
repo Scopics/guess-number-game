@@ -87,3 +87,7 @@
 	font-size: 1.2rem;
 	margin: 0 20px;
 }
+
+.error_text {
+	color: rgb(203, 64, 64);
+}

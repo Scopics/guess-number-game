@@ -16,14 +16,19 @@ enum Status {
 }
 
 export default function GuessNumberForm() {
+	const snackbar = useSnackbarOnError();
 	const queryClient = useQueryClient();
 	const [status, setStatus] = useState<Status>(Status.NoActiveGames);
 	const [id, setId] = useState<string>('');
 	const [guessedNumber, setGuessedNumber] = useState<string>('');
+	const [errorTxt, setErrorTxt] = useState<string>('');
 	const time = useRef(0);
 
 	useEffect(() => {
-		if (status == Status.Lost) setId('');
+		if (status == Status.Lost) {
+			setErrorTxt('');
+			setId('');
+		}
 	}, [status]);
 
 	const { mutate: createGame } = useMutation(
@@ -32,9 +37,8 @@ export default function GuessNumberForm() {
 			return GameControllerService.createGame();
 		},
 		{
-			onError: useSnackbarOnError(),
+			onError: snackbar,
 			onSettled: data => {
-				console.log(data);
 				if (data) {
 					setId(data.id);
 					setStatus(Status[data.status]);
@@ -50,7 +54,7 @@ export default function GuessNumberForm() {
 			return GameControllerService.start(id);
 		},
 		{
-			onError: useSnackbarOnError(),
+			onError: snackbar,
 			onSettled: data => {
 				if (data) {
 					setStatus(Status[data.status]);
@@ -67,9 +71,19 @@ export default function GuessNumberForm() {
 			return GameControllerService.guessNumber(id, { enteredNumber });
 		},
 		{
-			onError: useSnackbarOnError(),
+			onError: snackbar,
 			onSettled: data => {
-				if (data) setStatus(Status[data.status]);
+				if (data) {
+					if (!data.isGuessed) {
+						setErrorTxt(`Number is incorrect, must be ${data.characteristic}`);
+						setGuessedNumber('');
+						setStatus(Status[data.game.status]);
+					} else {
+						setErrorTxt('');
+						setGuessedNumber('');
+						time.current = Date.now() + data.game.timeToGuess * 1000;
+					}
+				}
 				queryClient.invalidateQueries(entities.game);
 			},
 		},
@@ -87,7 +101,7 @@ export default function GuessNumberForm() {
 					setStatus(Status[data.status]);
 				}
 			},
-			onError: useSnackbarOnError(),
+			onError: snackbar,
 		},
 	);
 
@@ -119,17 +133,19 @@ export default function GuessNumberForm() {
 									<span>Time is up!</span>
 								</Countdown>
 							</div>
+							{errorTxt && <div className='level_text error_text'>{errorTxt}</div>}
 							<Input
 								label='Guess Number Game'
 								value={guessedNumber}
-								onChange={e => setGuessedNumber(e.currentTarget.value)}
+								onChange={e => {
+									setGuessedNumber(e.target.value);
+								}}
 							/>
 							<button
 								className='guess_button'
 								role='button'
 								onClick={() => {
-									console.log(status);
-									console.log(id);
+									guessNumber(+guessedNumber);
 								}}
 							>
 								Guess

@@ -3,6 +3,7 @@
 /* eslint-disable */
 import type { GameResponse } from '../models/GameResponse';
 import type { GuessNumberRequest } from '../models/GuessNumberRequest';
+import type { GuessNumberResponse } from '../models/GuessNumberResponse';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -41,13 +42,13 @@ export class GameControllerService {
     /**
      * @param id
      * @param requestBody
-     * @returns GameResponse
+     * @returns GuessNumberResponse
      * @throws ApiError
      */
     public static guessNumber(
         id: string,
         requestBody: GuessNumberRequest,
-    ): CancelablePromise<GameResponse> {
+    ): CancelablePromise<GuessNumberResponse> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/game/{id}/guess',

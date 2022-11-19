@@ -14,9 +14,11 @@ export class GameFormatter {
     };
   }
 
-  public toGuessNumberResponse(isGuessed: boolean): GuessNumberResponse {
+  public toGuessNumberResponse(isGuessed: boolean, characteristic: string, game: Game): GuessNumberResponse {
     return {
       isGuessed,
+      characteristic,
+      game: this.toGameResponse(game),
     };
   }
 }

@@ -7,6 +7,11 @@ import {ApplicationError} from '../../shared/error/applicationError';
 import {GameStatus} from '../../entity/game.entity';
 import {GameLevelKeyService} from './game_level_key.service';
 
+interface guessNumberReturnsType {
+  isGuessed: boolean;
+  characteristic: string;
+}
+
 @Injectable()
 export class GameService {
   constructor(
@@ -35,8 +40,9 @@ export class GameService {
   public async guessNumber(
     game: Game,
     enteredNumber: number,
-  ): Promise<boolean> {
+  ): Promise<guessNumberReturnsType> {
     const isGuessed = game.guessedNumber === enteredNumber;
+    const characteristic = enteredNumber > game.guessedNumber ? 'less' : 'greater';
 
     if (game.status !== GameStatus.Active) {
       throw new ApplicationError('Forbidden to guess number');
@@ -44,7 +50,7 @@ export class GameService {
 
     if (isGuessed) {
       game.nextLevel();
-      game.status = GameStatus.Idle;
+      game.status = GameStatus.Active;
       await this.gameRepository.update(game);
 
       const key = this.gameLevelKeyService.getKey({
@@ -55,7 +61,7 @@ export class GameService {
       client.set(key, 1, 'EX', game.timeToGuess);
     }
 
-    return isGuessed;
+    return { isGuessed, characteristic };
   }
 
   public async start(game: Game): Promise<Game> {

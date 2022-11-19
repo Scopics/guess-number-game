@@ -39,18 +39,18 @@ export class GameController {
 
   @Post('/:id/guess')
   @HttpCode(HttpStatus.OK)
-  @ApiResponse({ status: HttpStatus.OK, type: GameResponse })
+  @ApiResponse({ status: HttpStatus.OK, type: GuessNumberResponse })
   public async guessNumber(
     @Param('id') id: string,
     @Body() body: GuessNumberRequest,
   ): Promise<GuessNumberResponse> {
     const game = await this.gameService.getById(id);
-    const isNumberGuessed = await this.gameService.guessNumber(
+    const { isGuessed, characteristic } = await this.gameService.guessNumber(
       game,
       body.enteredNumber,
     );
 
-    return this.gameFormatter.toGuessNumberResponse(isNumberGuessed);
+    return this.gameFormatter.toGuessNumberResponse(isGuessed, characteristic, game);
   }
 
   @Post('/:id/start')
