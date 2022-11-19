@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Input.css';
 
 export interface InputProps {
+	value: string;
+	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	locked?: boolean;
-	active?: boolean;
-	predicted?: string;
-	value?: string;
 	error?: string;
 	label?: string;
 }
@@ -17,41 +16,16 @@ type StateType = {
 	label: string;
 };
 
-export default class Input extends React.Component<InputProps, StateType> {
-	constructor(props: InputProps) {
-		super(props);
+export default function Input({ value, onChange, ...props }: InputProps) {
+	const [label, setLabel] = useState(props.label || 'Label');
+	const [error, setError] = useState(props.error || '');
 
-		this.state = {
-			active: (props.locked && props.active) || false,
-			value: props.value || '',
-			error: props.error || '',
-			label: props.label || 'Label',
-		};
-	}
-
-	changeValue(event: React.FormEvent<HTMLInputElement>) {
-		const value = event.currentTarget.value;
-		this.setState({ value, error: '' });
-	}
-
-	render() {
-		const { active, value, error, label } = this.state;
-
-		return (
-			<div className={'field active'}>
-				<input
-					id={'base_input'}
-					type='text'
-					value={value}
-					placeholder={label}
-					onChange={this.changeValue.bind(this)}
-					onFocus={() => active && this.setState({ active: true })}
-					onBlur={() => active && this.setState({ active: false })}
-				/>
-				<label htmlFor={'base_input'} className={error && 'error'}>
-					{error || label}
-				</label>
-			</div>
-		);
-	}
+	return (
+		<div className={'field active'}>
+			<input id='base_input' type='number' value={value} placeholder={label} onChange={onChange} />
+			<label htmlFor='base_input' className={error && 'error'}>
+				{error || label}
+			</label>
+		</div>
+	);
 }
