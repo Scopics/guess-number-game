@@ -7,19 +7,21 @@ services:
     image: postgres:${POSTGRES_VERSION}
     volumes:
       - ./data_postgres:/var/lib/postgresql/data
-    ports:
+    ports: # comment or delete if you are not connecting to the database from the host
       - 5432:5432
     restart: on-failure
+
   redis:
     env_file: .env
     container_name: ${APP_NAME}-redis
     image: redis:${REDIS_VERSION}
-    ports:
+    ports: # comment or delete if you are not connecting to the database from the host
       - 6379:6379
     command: redis-server --save 20 1 --loglevel warning
     volumes:
       - ./data_redis:/data
     restart: on-failure
+
   backend:
     env_file: .env
     container_name: ${APP_NAME}-backend
@@ -32,12 +34,15 @@ services:
     ports:
       - 5000:${APP_BACKEND_PORT}
     restart: on-failure
+
   frontend:
     env_file: .env
     container_name: ${APP_NAME}-frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        backend_core_url: ${BACKEND_CORE_URL}
     depends_on:
       - backend
     ports:
