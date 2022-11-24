@@ -1,6 +1,4 @@
 .env
 node_modules/
-dist/
-data_redis/
-data_postgres/
+build/
 README.md

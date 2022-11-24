@@ -1,5 +1,3 @@
 node_modules/
 dist/
-data_redis/
-data_postgres/
 README.md
