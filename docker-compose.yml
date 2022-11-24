@@ -2,7 +2,8 @@ version: '3.9'
 
 services:
   postgres:
-    env_file: .env
+    env_file: 
+      - .env
     container_name: ${APP_NAME}-postgres
     image: postgres:${POSTGRES_VERSION}
     volumes:
@@ -12,7 +13,8 @@ services:
     restart: on-failure
 
   redis:
-    env_file: .env
+    env_file: 
+      - .env
     container_name: ${APP_NAME}-redis
     image: redis:${REDIS_VERSION}
     ports: # comment or delete if you are not connecting to the database from the host
@@ -23,7 +25,8 @@ services:
     restart: on-failure
 
   backend:
-    env_file: .env
+    env_file:
+      - .env
     container_name: ${APP_NAME}-backend
     build:
       context: ./backend
@@ -36,7 +39,8 @@ services:
     restart: on-failure
 
   frontend:
-    env_file: .env
+    env_file: 
+      - .env
     container_name: ${APP_NAME}-frontend
     build:
       context: ./frontend
