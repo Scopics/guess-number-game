@@ -4,7 +4,6 @@ ARG backend_core_url
 ENV REACT_APP_CORE_URL=${backend_core_url}
 
 WORKDIR /app
-RUN yarn global add serve
 
 COPY ./package.json /app/package.json
 COPY ./yarn.lock /app/yarn.lock
